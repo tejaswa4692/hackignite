@@ -9,6 +9,7 @@ let linktoimg;
 
 
 async function init() {
+  
     const res = await fetch('http://127.0.0.1:5000/');
     const data = await res.json();
 
@@ -20,6 +21,7 @@ async function init() {
 
 // Init map
 function initMap() {
+
   map = L.map('mapid').setView(DEFAULT_CENTER, 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -38,8 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Utilities
-function loadIssues() {
+async function loadIssues() {
   try {
+
+    const res = await fetch('http://127.0.0.1:5000/');
+    const data = await res.json();
+
+    console.log(data)
+    
+    data.forEach(c => {
+        addcards(c.heading, c.imglnk, c.content, c.date);
+    });    
+
+    
     return JSON.parse(localStorage.getItem(ISSUES_KEY) || "[]");
   } catch (e) {
     return [];
@@ -47,51 +60,142 @@ function loadIssues() {
 }
 
 function saveIssues(arr) {
+  localStorage.clear()
+  console.log(arr)
   localStorage.setItem(ISSUES_KEY, JSON.stringify(arr));
 }
 
 
-async function submitimage(image) {
-  
-  
+// Upload image and return URL when done
+async function uploadimage(fileInput) {
+    const image = fileInput.files[0];
+
+    if (!image) {
+        document.getElementById("submitbtn").innerHTML = "Please select an image first";
+        return null;
+    }
+
+    document.getElementById("submitbtn").innerHTML = "Uploading image...";
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = async () => {
+            const base64image = reader.result.split(',')[1];
+
+            try {
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${imagebb_api}`, {
+                    method: 'POST',
+                    body: new URLSearchParams({ 'image': base64image })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log("Image uploaded:", data.data.url);
+                    document.getElementById("submitbtn").innerHTML = "Image Uploaded!";
+                    resolve(data.data.url);
+                } else {
+                    document.getElementById("submitbtn").innerHTML = "Image upload failed";
+                    console.error("Image upload failed", data);
+                    resolve(null);
+                }
+            } catch (err) {
+                document.getElementById("submitbtn").innerHTML = "Upload error";
+                console.error("Upload error", err);
+                resolve(null);
+            }
+        };
+
+        reader.readAsDataURL(image);
+    });
+}
+
+async function uploadentry(link2iimg) {
+    const type = document.getElementById('issueType').value;
+    const desc = document.getElementById('desc').value.trim();
+
+    if (!desc) {
+        alert('Please enter a description');
+        return;
+    }
+
+    const center = map.getCenter();
+    console.log(center)
+    const coordx = center.lat;
+    const coordy = center.lng;
+
+    const issue = {
+        id: 'i_' + Date.now(),
+        type,
+        desc,
+        coordx,
+        coordy,
+        status: "pending",
+        imglnk: link2iimg
+    };
+
+    const arr = loadIssues();
+    arr.push(issue);
+    saveIssues(arr);
+
+
+    try {
+      const res = await fetch("http://127.0.0.1:5000/add_entry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(issue)
+    });
+
+    const data = await res.json();
+    console.log("Server response:", data);
+  } catch (err) {
+    console.error("Error:", err);
+  }
+
+
+
+    addMarkerForIssue(issue);
+    renderIssuesList();
+
+    document.getElementById('desc').value = '';
+    const fileInput = document.getElementById('imgfile');
+    if (fileInput) fileInput.value = '';
+
+    alert('Issue submitted! Marker placed at current map center.');
+    document.getElementById("submitbtn").innerHTML = "Issue Submitted";
+
+    // Wait 2 seconds then reset button text
+    setTimeout(() => {
+        document.getElementById("submitbtn").innerHTML = "Submit Issue";
+        linktoimg = null; // reset image link for next submission
+    }, 2000);
+}
+
+
+async function submitIssue() {
+  try {
+      const fileInput = document.getElementById('imgfile');
+      let imageUrl = linktoimg || null;
+
+      if (!imageUrl && fileInput && fileInput.files.length > 0) {
+          // Wait until image is uploaded
+          imageUrl = await uploadimage(fileInput);
+          if (!imageUrl) return; // Stop if upload failed
+          linktoimg = imageUrl; // Save for next time
+      }
+
+      await uploadentry(imageUrl);
+  }catch (err) {
+      console.error("Error submitting issue:", err);
+      alert("An error occurred while submitting the issue. Please try again.");
+      document.getElementById("submitbtn").innerHTML = "Submit Issue";
+  }
 }
 
 
 
 
-// Add marker & save
-function submitIssue() {
-  const type = document.getElementById('issueType').value;
-  const desc = document.getElementById('desc').value.trim();
-  const fileInput = document.getElementById('imgfile');
-
-  if(!desc) { alert('Please enter a description'); return; }
-
-  // Use map center as default location
-  const center = map.getCenter();
-  const coords = { lat: center.lat, lng: center.lng };
-
-  const issue = {
-    id: 'i_' + Date.now(),
-    type,
-    desc,
-    coords,
-    ts: Date.now(),
-    status: "pending",
-    imgName: fileInput.files && fileInput.files[0] ? fileInput.files[0].name : null
-  };
-
-  const arr = loadIssues();
-  arr.push(issue);
-  saveIssues(arr);
-
-  addMarkerForIssue(issue);
-  renderIssuesList();
-  document.getElementById('desc').value = '';
-  if(fileInput) fileInput.value = '';
-  alert('Issue submitted (demo). Marker placed at current map center.');
-  document.getElementById("submitbtn").innerHTML = "Issue Submitted"
-}
 
 // quick hero form submit
 function submitIssueFromHero() {
@@ -104,8 +208,8 @@ function submitIssueFromHero() {
   const issue = {
     id: 'i_' + Date.now(),
     type, desc,
-    coords: { lat: center.lat, lng: center.lng },
-    ts: Date.now(),
+    coordx: center.lat,
+    coordy: center.lng,
     status: "pending"
   };
   const arr = loadIssues(); arr.push(issue); saveIssues(arr);
@@ -117,7 +221,7 @@ function submitIssueFromHero() {
 // Add marker on the map
 function addMarkerForIssue(issue) {
   const color = issue.status === 'resolved' ? 'green' : 'red';
-  const icon = L.circleMarker([issue.coords.lat, issue.coords.lng], {
+  const icon = L.circleMarker([issue.coordx, issue.coordy], {
     radius: 8, color: color, fillColor: color, fillOpacity: 0.9
   }).addTo(markersLayer);
 
