@@ -2,7 +2,7 @@
 // CONFIG
 // --------------------------------------------------
 const DEFAULT_CENTER = [26.2183, 78.1828]; // Gwalior
-const IMAGEBB_API = "80d583c76874d0b710d837acf5d259f1";
+const IMAGEBB_API = os.environ.get{"IMAGEBBKEY"};
 
 let map;
 let markersLayer;
@@ -35,7 +35,7 @@ async function initMap() {
 // --------------------------------------------------
 async function loadIssues() {
   try {
-    const res = await fetch('http://127.0.0.1:5000/');
+    const res = await fetch('https://hackignite.onrender.com/');
     const data = await res.json();
     return data;
   } catch (e) {
@@ -125,7 +125,7 @@ async function submitIssue() {
     };
 
     // Send to backend
-    await fetch("http://127.0.0.1:5000/add_entry", {
+    await fetch("https://hackignite.onrender.com/add_entry", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(issue)

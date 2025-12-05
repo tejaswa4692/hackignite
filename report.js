@@ -1,6 +1,6 @@
 async function init() {
     try {
-        const res = await fetch('http://127.0.0.1:5000/');
+        const res = await fetch('https://hackignite.onrender.com/');
         const reports = await res.json();
 
         const reportList = document.getElementById('reportList');
