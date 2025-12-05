@@ -4,8 +4,8 @@ from flask_cors import CORS
 from supabase import client, create_client
 
 
-url: str = "https://rksnrwgnafxvhcukkysx.supabase.co"
-key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrc25yd2duYWZ4dmhjdWtreXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5MDQ2OTMsImV4cCI6MjA4MDQ4MDY5M30.nSxMDfEjXK7xidMpwfwyM74cUXARAoSMSHusSRSwUEg"
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
 
 
 
