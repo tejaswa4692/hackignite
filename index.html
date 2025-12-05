@@ -47,11 +47,20 @@
 
     <!-- MOVE MAP SECTION UP -->
     <section id="map" class="section map-section" style="margin-top:40px">
-      <div class="container map-wrap">
+      <div class="container map-wrap" id="container_map_warp">
         <div class="map-left">
           <h3 id="report">Live Issue Map (Gwalior)</h3>
           <div id="mapid"></div>
-          <p class="muted">Red pins = pending issues , Green pins = resolved</p>
+
+
+
+          <div id="bottomtext">
+
+            <p class="muted">Red pins = pending issues , Green pins = resolved</p>
+
+
+          </div>
+
         </div>
 
         <aside class="map-right">
@@ -64,6 +73,7 @@
               <option>Garbage</option>
               <option>Broken Pipeline</option>
               <option>Street Light</option>
+              <option>Dead Animal</option>
             </select>
 
             <label>Description</label>
@@ -73,8 +83,8 @@
             <input id="imgfile" type="file" accept="image/*">
 
             <div style="display:flex;gap:8px;margin-top:10px">
-              <button class="btn primary" type="submit">Submit</button>
-              <button class="btn" type="button" onclick="useMyLocation()">Use My Location</button>
+              <button class="btn primary" id="submitbtn"  type="submit">Upload Image</button>
+              <button class="btn" id="usemyloc" type="button" onclick="useMyLocation()">Use My Location</button>
             </div>
           </form>
 

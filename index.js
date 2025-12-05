@@ -4,6 +4,9 @@ const DEFAULT_CENTER = [26.2183, 78.1828]; // Gwalior
 let map;
 let markersLayer;
 
+const imagebb_api = "80d583c76874d0b710d837acf5d259f1"
+let linktoimg;
+
 
 async function init() {
     const res = await fetch('http://127.0.0.1:5000/');
@@ -12,10 +15,6 @@ async function init() {
     console.log(data)
   
 }
-
-
-
-
 
 
 
@@ -51,6 +50,15 @@ function saveIssues(arr) {
   localStorage.setItem(ISSUES_KEY, JSON.stringify(arr));
 }
 
+
+async function submitimage(image) {
+  
+  
+}
+
+
+
+
 // Add marker & save
 function submitIssue() {
   const type = document.getElementById('issueType').value;
@@ -64,11 +72,12 @@ function submitIssue() {
   const coords = { lat: center.lat, lng: center.lng };
 
   const issue = {
+    id: 'i_' + Date.now(),
     type,
     desc,
-    coordx,
-    corrdy,
-    status: "1",
+    coords,
+    ts: Date.now(),
+    status: "pending",
     imgName: fileInput.files && fileInput.files[0] ? fileInput.files[0].name : null
   };
 
@@ -81,6 +90,7 @@ function submitIssue() {
   document.getElementById('desc').value = '';
   if(fileInput) fileInput.value = '';
   alert('Issue submitted (demo). Marker placed at current map center.');
+  document.getElementById("submitbtn").innerHTML = "Issue Submitted"
 }
 
 // quick hero form submit
@@ -187,15 +197,24 @@ function toggleResolve(id) {
   loadIssuesToMap();
   renderIssuesList();
 }
+
+
 // use browser geolocation to move map and place marker at that pos
 function useMyLocation() {
-  if(!navigator.geolocation){ alert('Geolocation not supported'); return; }
+  if(!navigator.geolocation){
+     alert('Geolocation not supported');
+     document.getElementById("usemyloc").innerHTML = "Loc not supported pan to the place manually"
+     return; 
+    }
   navigator.geolocation.getCurrentPosition(pos => {
     map.setView([pos.coords.latitude, pos.coords.longitude], 17);
   }, err => {
     alert('Unable to get location or permission denied');
+    document.getElementById("usemyloc").innerHTML = "Unable to get choose map instead"
   });
 }
+
+
 
 // helpers
 function escapeHtml(str){
@@ -207,16 +226,5 @@ function escapeHtml(str){
 
 // center helper
 function centerToGwalior(){ map.setView(DEFAULT_CENTER,13); }
-// -------------------- REWARD SYSTEM -------------------------
-function checkReward() {
-  const credits = getCredits();
-  const rewardBox = document.getElementById('rewardBox');
 
-  if (credits >= 100) {
-    rewardBox.innerText = "🎉 Reward Unlocked!";
-  } else {
-    const remaining = 100 - credits;
-    rewardBox.innerText = `(${remaining} credits for reward)`;
-  }
-}
 

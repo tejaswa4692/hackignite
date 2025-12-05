@@ -14,7 +14,9 @@ body{margin:0;background:var(--bg);color:#0f172a;line-height:1.5}
 .container{max-width:var(--max);margin:0 auto;padding:18px}
 
 /* Header */
-.site-header{background:#fff;box-shadow:0 2px 8px rgba(2,6,23,0.06);position:sticky;top:0;z-index:40}
+.site-header{
+  z-index: 99999;
+  background:#fff;box-shadow:0 2px 8px rgba(2,6,23,0.06);position:sticky;top:0;z-index:40}
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 18px}
 .brand{display:flex;gap:12px;align-items:center}
 .brand h1{margin:0;font-size:18px}
@@ -51,7 +53,8 @@ h3{margin-top:0}
 
 /* map layout */
 .map-section .map-wrap{display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start}
-#mapid{height:420px;border-radius:12px;border:1px solid #e6eef8;overflow:hidden}
+#mapid{z-index: 1;
+     height: 620px;border-radius:12px;border:1px solid #e6eef8;overflow:hidden}
 .map-right{background:#fff;padding:12px;border-radius:12px;box-shadow:var(--shadow)}
 
 
@@ -98,4 +101,12 @@ h3{margin-top:0}
   width: 10%;
   height: 100%;
   background-color: black;
+}
+
+.container_map_warp{
+  background-color: black;
+}
+
+.bottomtext{
+  display:grid;grid-template-columns:1fr 1fr;
 }

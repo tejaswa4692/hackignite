@@ -12,11 +12,10 @@ CORS(app)
 
 
 @app.route("/")
-def init(){
+def init()
     response = supabase.table("main").select("*").execute()
     rows = response.data
     return jsonify(rows)
-}
 
 
 
