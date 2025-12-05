@@ -11,7 +11,7 @@ key: str = os.environ.get("SUPABASE_KEY")
 
 supabase = create_client(url, key)
 app = Flask(__name__)
-CORS(app, origins=["https://hackthonepicwebsite.onrender.com"])
+CORS(app, origins=["https://fixkrdoyar.onrender.com"])
 
 
 @app.route("/")
