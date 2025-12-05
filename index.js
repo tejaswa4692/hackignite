@@ -2,7 +2,7 @@
 // CONFIG
 // --------------------------------------------------
 const DEFAULT_CENTER = [26.2183, 78.1828]; // Gwalior
-const IMAGEBB_API = os.environ.get{"IMAGEBBKEY"};
+const IMAGEBB_API = os.environ.get("IMAGEBBKEY");
 
 let map;
 let markersLayer;
