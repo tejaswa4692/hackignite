@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CivicFix — Reported Issues</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .report-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px 0;
+    }
+    .report-item {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 20px;
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.3);
+      animation: pop-in 0.35s ease;
+    }
+    .report-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .report-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .report-content .title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .report-content .desc {
+      color: #333;
+    }
+    .report-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .status {
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #fff;
+    }
+    .pending { background: #e53935; }
+    .resolved { background: #2e7d32; }
+    .view-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .view-btn:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <svg width="40" height="40" viewBox="0 0 24 24"><path fill="#0b75ef" d="M3 13h4v8H3zM9 3h4v18H9zM15 8h4v13h-4z"/></svg>
+        <div>
+          <h1>CivicFix</h1>
+          <small>Crowdsourced Civic Issue Reporting</small>
+        </div>
+      </div>
+        <nav class="nav">
+
+            <a href="index.html">Go Back</a>
+
+        </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 style="margin-top:20px;">All Reports</h2>
+    <div class="report-list" id="reportList"></div>
+  </main>
+
+  <script src="report.js">
+
+  </script>
+</body>
+</html>

@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CivicFix — Crowdsourced Civic Issue Reporting</title>
 
-  <!-- Google font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Leaflet CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <link rel="stylesheet" href="style.css">
@@ -16,56 +13,36 @@
 
 <body>
   <header class="site-header">
-    <div class="container header-inner">
-
+    <div class="header-inner container">
       <div class="brand">
-        <svg width="40" height="40" viewBox="0 0 24 24"><path fill="#0b75ef" d="M3 13h4v8H3zM9 3h4v18H9zM15 8h4v13h-4z"></path></svg>
-        <div class="brand-text">
+        <svg width="40" height="40" viewBox="0 0 24 24"><path fill="#0b75ef" d="M3 13h4v8H3zM9 3h4v18H9zM15 8h4v13h-4z"/></svg>
+        <div>
           <h1>CivicFix</h1>
           <small>Crowdsourced Civic Issue Reporting</small>
         </div>
       </div>
-
-
-
-
-
       <nav class="nav">
-        <a href="#about">About</a>
+        <a href="report.html">View Reports</a>
         <a href="#features">Features</a>
         <a href="#map">Map</a>
         <a href="#team">Team</a>
         <a class="cta" href="#report">Report</a>
       </nav>
     </div>
-
   </header>
 
-
-
   <main>
-
-    <!-- MOVE MAP SECTION UP -->
+    <!-- MAP -->
     <section id="map" class="section map-section" style="margin-top:40px">
       <div class="container map-wrap" id="container_map_warp">
         <div class="map-left">
           <h3 id="report">Live Issue Map (Gwalior)</h3>
           <div id="mapid"></div>
-
-
-
-          <div id="bottomtext">
-
-            <p class="muted">Red pins = pending issues , Green pins = resolved</p>
-
-
-          </div>
-
+          <p class="muted" style="margin-top:10px">Red pins = pending, Green pins = resolved</p>
         </div>
 
         <aside class="map-right">
           <h4>Report an Issue</h4>
-
           <form id="report-form" onsubmit="event.preventDefault(); submitIssue();">
             <label>Issue Type</label>
             <select id="issueType">
@@ -78,18 +55,18 @@
             </select>
 
             <label>Description</label>
-            <textarea id="desc" rows="3" placeholder="Describe the issue..." style="resize: none;"></textarea>
+            <textarea id="desc" rows="3" placeholder="Describe the issue..."></textarea>
 
             <label>Upload image (optional)</label>
             <input id="imgfile" type="file" accept="image/*">
 
-            <div style="display:flex;gap:8px;margin-top:10px">
-              <button class="btn primary" id="submitbtn"  type="submit">Upload Image</button>
-              <button class="btn" id="usemyloc" type="button" onclick="useMyLocation()">Use My Location</button>
+            <div style="display:flex;gap:10px;margin-top:12px;">
+              <button class="btn primary" id="submitbtn" type="submit">Upload Image</button>
+              <button class="btn" type="button" onclick="useMyLocation()">Use My Location</button>
             </div>
           </form>
 
-          <h4 style="margin-top:18px">Reported Issues</h4>
+          <h4 style="margin-top:24px">Reported Issues</h4>
           <div id="issues-list" class="issues-list"></div>
         </aside>
       </div>
@@ -99,18 +76,11 @@
     <section id="about" class="section">
       <div class="container">
         <h3>About the Project</h3>
-        <p>CivicFix centralizes civic complaints into one platform. Citizens can report issues with photos and location, and track status until resolution.</p>
+        <p>CivicFix brings citizen complaints into one platform with geo-tagged posting, photos, and live status tracking.</p>
 
         <div class="two-col">
-          <div class="card">
-            <h4>Problem</h4>
-            <p>Fragmented complaints and slow response create frustration and poor civic maintenance.</p>
-          </div>
-
-          <div class="card">
-            <h4>Solution</h4>
-            <p>A simple reporting portal with geo-tagging, prioritization and transparent status tracking.</p>
-          </div>
+          <div class="card"><h4>Problem</h4><p>Fragmented complaint channels slow response and reduce civic transparency.</p></div>
+          <div class="card"><h4>Solution</h4><p>Unified portal with accurate locations, prioritization, and structured resolution.</p></div>
         </div>
       </div>
     </section>
@@ -119,27 +89,14 @@
     <section id="features" class="section alt">
       <div class="container">
         <h3>Key Features</h3>
-
         <div class="features-grid">
-          <div class="feature"><h4>Geo-tagged Reporting</h4><p>Exact coordinates for each report.</p></div>
-          <div class="feature"><h4>Transparent Tracking</h4><p>Live status visibility.</p></div>
-          <div class="feature"><h4>Gamified Engagement</h4><p>Points & leaderboards.</p></div>
-          <div class="feature"><h4>Multi-channel Access</h4><p>Web, app, SMS & WhatsApp-ready.</p></div>
-          <div class="feature"><h4>Authority Dashboard</h4><p>Reports, filters & resolution panel.</p></div>
-          <div class="feature"><h4>Offline-friendly</h4><p>Local queue for low-connectivity areas.</p></div>
+          <div class="feature"><h4>Geo-tagged Reporting</h4><p>Exact coordinates for each civic issue.</p></div>
+          <div class="feature"><h4>Live Status</h4><p>Track issues until resolved.</p></div>
+          <div class="feature"><h4>Gamified Engagement</h4><p>Earn points for civic contribution.</p></div>
+          <div class="feature"><h4>Multi-channel Support</h4><p>Web, App, WhatsApp-ready.</p></div>
+          <div class="feature"><h4>Authority Dashboard</h4><p>Filters, maps, and workflow tools.</p></div>
+          <div class="feature"><h4>Offline Support</h4><p>Queue submissions until online.</p></div>
         </div>
-      </div>
-    </section>
-
-    <!-- WHY -->
-    <section class="section">
-      <div class="container">
-        <h3>Why This Works</h3>
-        <ul>
-          <li>Simple UX with real-time location support.</li>
-          <li>Transparent flow from reporting to resolution.</li>
-          <li>Improves accountability & communication</li>
-        </ul>
       </div>
     </section>
 
@@ -147,21 +104,18 @@
     <section id="team" class="section alt">
       <div class="container">
         <h3>Team</h3>
-        <p>A passionate group aiming to improve civic engagement through technology.</p>
+        <p>We build tools to empower citizen participation and civic improvement.</p>
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <small> CivicFix — Crowdsourced Civic Issue Reporting and resolution </small>
+      <small>CivicFix — Improving cities together</small>
     </div>
   </footer>
 
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="index.js"></script>
-
 </body>
 </html>
